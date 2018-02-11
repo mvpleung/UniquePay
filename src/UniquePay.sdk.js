@@ -3,7 +3,7 @@
  * @Author: liangzc 
  * @Date: 2018-01-12
  * @Last Modified by: liangzc
- * @Last Modified time: 2018-02-11 10:37:14
+ * @Last Modified time: 2018-02-11 15:11:24
  */
 class _$UniquePay {
   constructor() {
@@ -56,7 +56,7 @@ class _$UniquePay {
      * @returns {Promise}
      */
   pay(options, signatureConfig) {
-    return $globalConfig.navigator.isWechat ? this.wechatPay(options, signatureConfig) : $globalConfig.navigator.isAlipay ? this.aliPay(options) : () => alert('请用微信或支付宝打开');
+    return $globalConfig.navigator.isWechat ? this.wechatPay(options, signatureConfig) : $globalConfig.navigator.isAlipay ? this.aliPay(options) : new Promise((resolve, reject) => { });
   }
 
   /**
