@@ -3,34 +3,40 @@
  * @Author: liangzc 
  * @Date: 2018-01-12
  * @Last Modified by: liangzc
- * @Last Modified time: 2018-02-11 15:11:24
+ * @Last Modified time: 2018-02-13 17:43:19
  */
 class _$UniquePay {
   constructor() {
     if (typeof $globalConfig === 'undefined' || !$globalConfig.navigator) {
       window.$globalConfig = {
         navigator: {
-          isWechat: navigator.userAgent.match(/(MicroMessenger)\/([\d\.]+)/i) !== null,
-          isAlipay: navigator.userAgent.match(/(AlipayClient)\/([\d\.]+)/i) !== null
+          isWechat:
+            navigator.userAgent.match(/(MicroMessenger)\/([\d\.]+)/i) !== null,
+          isAlipay:
+            navigator.userAgent.match(/(AlipayClient)\/([\d\.]+)/i) !== null
         }
-      }
+      };
     }
     this.init();
   }
 
   /**
-     * 初始化
-     */
+   * 初始化
+   */
   init() {
     if ($globalConfig.navigator.isWechat || $globalConfig.navigator.isAlipay) {
-      this.loadJS($globalConfig.navigator.isWechat ? '//res.wx.qq.com/open/js/jweixin-1.2.0.js' : '//a.alipayobjects.com/g/component/antbridge/1.1.4/antbridge.min.js');
+      this.loadJS(
+        $globalConfig.navigator.isWechat ?
+          '//res.wx.qq.com/open/js/jweixin-1.2.0.js' :
+          '//a.alipayobjects.com/g/component/antbridge/1.1.4/antbridge.min.js'
+      );
     }
   }
 
   /**
-     * 加载 js 文件
-     * @param {String} path js相对路径 
-     */
+   * 加载 js 文件
+   * @param {String} path js相对路径
+   */
   loadJS(path) {
     if (!path || path === '') {
       console.error('UniquePay init fail , path : null');
@@ -49,33 +55,44 @@ class _$UniquePay {
   }
 
   /**
-     * 唤起支付
-     * @param {Object} options 支付参数，参考各支付平台
-     * @param {Object} signatureConfig 仅限微信 jssdk，签名配置信息，参考微信官方 jssdk 文档
-     * 
-     * @returns {Promise}
-     */
+   * 唤起支付
+   * @param {Object} options 支付参数，参考各支付平台
+   * @param {Object} signatureConfig 仅限微信 jssdk，签名配置信息，参考微信官方 jssdk 文档
+   *
+   * @returns {Promise}
+   */
   pay(options, signatureConfig) {
-    return $globalConfig.navigator.isWechat ? this.wechatPay(options, signatureConfig) : $globalConfig.navigator.isAlipay ? this.aliPay(options) : new Promise((resolve, reject) => { });
+    return $globalConfig.navigator.isWechat ?
+      this.wechatPay(options, signatureConfig) :
+      $globalConfig.navigator.isAlipay ?
+        this.aliPay(options) :
+        new Promise(() => {});
   }
 
   /**
-     * 调起微信支付
-     * @param {Object} options 微信支付参数，参考微信官方支付文档
-     * @{options}  timestamp 支付签名时间戳，注意微信jssdk中的所有使用timestamp字段均为小写。但最新版的支付后台生成签名使用的timeStamp字段名需大写其中的S字符
-     * @{options}  nonceStr 支付签名随机串，不长于 32 位
-     * @{options}  package 统一支付接口返回的prepay_id参数值，提交格式如：prepay_id=\*\*\*）
-     * @{options}  signType 签名方式，默认为'SHA1'，使用新版支付需传入'MD5'
-     * @{options}  paySi gn 支付签名
-     * 
-     * @param {Object} signatureConfig 签名配置信息，参考微信官方 jssdk 文档
-     * 
-     * @returns {Promise}
-     */
+   * 调起微信支付
+   * @param {Object} options 微信支付参数，参考微信官方支付文档
+   * @example
+   * timestamp 支付签名时间戳，注意微信jssdk中的所有使用timestamp字段均为小写。但最新版的支付后台生成签名使用的timeStamp字段名需大写其中的S字符
+   * nonceStr 支付签名随机串，不长于 32 位
+   * package 统一支付接口返回的prepay_id参数值，提交格式如：prepay_id=\*\*\*）
+   * signType 签名方式，默认为'SHA1'，使用新版支付需传入'MD5'
+   * paySi gn 支付签名
+   *
+   * @param {Object} signatureConfig 签名配置信息，参考微信官方 jssdk 文档
+   *
+   * @returns {Promise}
+   */
   wechatPay(options, signatureConfig) {
     return new Promise((resolve, reject) => {
-      if (!options || Object.prototype.toString.call(options) !== '[object Object]') {
-        reject({ message: '唤起微信支付参数错误，参数[options]：' + JSON.stringify(options) });
+      if (
+        !options ||
+        Object.prototype.toString.call(options) !== '[object Object]'
+      ) {
+        reject({
+          message:
+            '唤起微信支付参数错误，参数[options]：' + JSON.stringify(options)
+        });
         return;
       }
       //唤起支付
@@ -101,7 +118,8 @@ class _$UniquePay {
         wx.chooseWXPay(options);
       };
 
-      if (this.signature !== true && signatureConfig) { //未注入签名数据
+      if (this.signature !== true && signatureConfig) {
+        //未注入签名数据
         signatureConfig.debug = process.env.NODE_ENV !== 'production';
         signatureConfig.jsApiList = ['checkJsApi', 'chooseWXPay'];
         wx.config(signatureConfig);
@@ -116,7 +134,7 @@ class _$UniquePay {
             code: 'fail',
             message: res.errMsg || res.err_desc || 'jsapi配置失败'
           });
-        })
+        });
       } else {
         _wixinPay();
       }
@@ -124,17 +142,24 @@ class _$UniquePay {
   }
 
   /**
-     * 调起支付宝支付
-     * @param {Object} options 支付参数（tradeNO/orderStr），参考支付宝官方支付文档
-     * @{options} tradeNO 交易号
-     * @{options} orderStr 交易字符串
-     * 
-     * @returns {Promise}
-     */
+   * 调起支付宝支付
+   * @param {Object} options 支付参数（tradeNO/orderStr），参考支付宝官方支付文档
+   * @example
+   * tradeNO 交易号
+   * orderStr 交易字符串
+   *
+   * @returns {Promise}
+   */
   aliPay(options) {
     return new Promise((resolve, reject) => {
-      if (!options || Object.prototype.toString.call(options) !== '[object Object]') {
-        reject({ message: '唤起支付宝参数错误，参数[options]：' + JSON.stringify(options) });
+      if (
+        !options ||
+        Object.prototype.toString.call(options) !== '[object Object]'
+      ) {
+        reject({
+          message:
+            '唤起支付宝参数错误，参数[options]：' + JSON.stringify(options)
+        });
         return;
       }
       ap.tradePay(options, result => {
@@ -161,4 +186,6 @@ class _$UniquePay {
   }
 }
 
-typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = new _$UniquePay() : window.UniquePay = new _$UniquePay();
+typeof exports === 'object' && typeof module !== 'undefined' ?
+  module.exports = new _$UniquePay() :
+  window.UniquePay = new _$UniquePay();
