@@ -1,6 +1,6 @@
 {
   "name": "unique-pay",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "微信支付、支付宝支付聚合SDK，支持内置对象调用、jsSdk 调用，支持 vuejs、script 引用",
   "main": "./src/index.js",
   "scripts": {
