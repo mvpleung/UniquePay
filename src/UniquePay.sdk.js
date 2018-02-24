@@ -3,7 +3,7 @@
  * @Author: liangzc 
  * @Date: 2018-01-12
  * @Last Modified by: liangzc
- * @Last Modified time: 2018-02-13 17:43:19
+ * @Last Modified time: 2018-02-24 15:57:26
  */
 class _$UniquePay {
   constructor() {
@@ -120,7 +120,11 @@ class _$UniquePay {
 
       if (this.signature !== true && signatureConfig) {
         //未注入签名数据
-        signatureConfig.debug = process.env.NODE_ENV !== 'production';
+        signatureConfig.debug =
+          signatureConfig.debug ||
+          (typeof process !== 'undefined' ?
+            (process.env || {}).NODE_ENV !== 'production' :
+            false);
         signatureConfig.jsApiList = ['checkJsApi', 'chooseWXPay'];
         wx.config(signatureConfig);
         wx.ready(() => {
