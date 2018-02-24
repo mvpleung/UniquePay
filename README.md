@@ -3,10 +3,13 @@
 
 ### install 
 
+```
+npm install unique-pay
+```
+
 #### npm
 
 ```js
-npm install unique-pay
 import uniquePay from 'unique-pay';
 Vue.use(uniquePay,{
     useSdk: false //是否使用各自平台 jssdk
