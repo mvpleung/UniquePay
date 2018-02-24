@@ -34,9 +34,9 @@ Vue.use(uniquePay,{
 ### use
 ```vue
 <template>
-	<div class="input-box clearFix">
-		<button v-on:click="pay">测试支付</button>
-	</div>
+   <div class="input-box clearFix">
+	<button v-on:click="pay">测试支付</button>
+   </div>
 </template>
 
 <script>
@@ -95,13 +95,13 @@ Vue.use(uniquePay,{
 
 >手动调用支付宝支付桥接对象，内部调用 AlipayJSBridge.call('tradePay')
 
-(Promise) this.$uniquePay.wechatPay(params)  
+(Promise) this.$uniquePay.aliPay(params)  
 
 #### aliPay(useSdk: true)
 
 >手动调用支付宝jsapi，内部调用 ap.tradePay(options)
 
-(Promise) this.$uniquePay.wechatPay(params)  
+(Promise) this.$uniquePay.aliPay(params)  
 
 
 ###  参数说明
@@ -122,8 +122,8 @@ Vue.use(uniquePay,{
 ```js
 {
     code: '',  //微信平台回调['ok'|'cancel'|'fail']，支付宝平台请参考官方文档 resultCode
-	message: '', //回调消息
-	...          //支付平台返回的其他参数
+    message: '', //回调消息
+    ...          //支付平台返回的其他参数
 }
 ```
 
