@@ -2,7 +2,7 @@
  * @Author: liangzc 
  * @Date: 2018-02-09 
  * @Last Modified by: liangzc
- * @Last Modified time: 2018-02-13 15:35:15
+ * @Last Modified time: 2018-03-16 15:23:17
  */
 /**
  * @param {Vue} Vue Vue对象
@@ -10,9 +10,9 @@
  */
 let install = function(Vue, options = {}) {
   if (install.installed) return;
-  Vue.$uniquePay = Vue.prototype.$uniquePay = require(options.useSdk ?
-    './UniquePay.sdk' :
-    './UniquePay'); //添加vm实例验证属性
+  Vue.$uniquePay = Vue.prototype.$uniquePay = new (require('./UniquePay'))(
+    options.useSdk
+  );
 };
 if (typeof window !== 'undefined' && window.Vue) {
   window.Vue.use(install);
