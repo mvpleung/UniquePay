@@ -2,7 +2,7 @@
   "name": "unique-pay",
   "version": "0.0.3",
   "description": "微信支付、支付宝支付聚合SDK，支持内置对象调用、jsSdk 调用，支持 vuejs、script 引用",
-  "main": "./src/index.js",
+  "main": "./src/UniquePay.js",
   "scripts": {
     "dev": "cross-env NODE_ENV=development webpack-dev-server --open --hot",
     "build": "cross-env NODE_ENV=production webpack --progress --hide-modules"

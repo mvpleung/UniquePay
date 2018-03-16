@@ -3,7 +3,7 @@
  * @Author: liangzc 
  * @Date: 2018-01-12
  * @Last Modified by: liangzc
- * @Last Modified time: 2018-03-16 15:22:41
+ * @Last Modified time: 2018-03-16 15:44:15
  */
 class _$UniquePay {
   constructor(useSdk) {
@@ -41,16 +41,18 @@ class _$UniquePay {
         console.error('UniquePay init fail , path : null');
         return;
       }
-      let a = document.createElement('script');
-      a.src = location.protocol + path;
-      a.onload = () => {
-        console.log('UniquePay init success !!! ');
-      };
-      a.onerror = () => {
-        console.error('UniquePay init fail , path : ', path);
-      };
-      let c = document.getElementsByTagName('script')[0];
-      c.parentNode.insertBefore(a, c);
+      if (document.querySelector(`script[src$="${path}"]`) === null) {
+        let a = document.createElement('script');
+        a.src = location.protocol + path;
+        a.onload = () => {
+          console.log('UniquePay init success !!! ');
+        };
+        a.onerror = () => {
+          console.error('UniquePay init fail , path : ', path);
+        };
+        let c = document.getElementsByTagName('script')[0];
+        c.parentNode.insertBefore(a, c);
+      }
     }
   }
 
@@ -251,6 +253,13 @@ let _onBridgeReady = () => {
   });
 };
 
+let install = function(Vue, options = {}) {
+  if (install.installed) return;
+  Vue.$uniquePay = Vue.prototype.$uniquePay = new _$UniquePay(options.useSdk);
+};
+if (typeof window !== 'undefined' && window.Vue) {
+  window.Vue.use(install);
+}
 typeof exports === 'object' && typeof module !== 'undefined' ?
-  module.exports = _$UniquePay :
+  module.exports = install :
   window.UniquePay = new _$UniquePay();

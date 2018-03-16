@@ -72,7 +72,7 @@ Vue.use(uniquePay,{
    <body>
 		<button onclick="pay()">pay</button>
 	</body>
-	<script type="text/javascript" src="js/UniquePay.min.js"></script>
+	<script type="text/javascript" src="js/UniquePay.js"></script>
 	<script>
 		function pay() {
 			//初始化SDK
@@ -104,6 +104,12 @@ Vue.use(uniquePay,{
 ```
 
 ### 方法说明
+
+#### initSdk
+
+>初始化SDK(仅用于微信SDK模式签名)
+
+(void) this.$uniquePay.initSdk(signatureConfig /**微信权限验证配置**/)  
 
 #### pay
 
