@@ -27,10 +27,10 @@ Vue.use(uniquePay,{
 
 ```
 
-- jssdk版本
+- jssdk版本(增加 "usesdk" 屬性)
 
 ```js
-<script src="path/unique-pay/src/UniquePay.sdk.js"></script>
+<script src="path/unique-pay/src/UniquePay.js" usesdk></script>
 
 ```
 
@@ -67,6 +67,35 @@ Vue.use(uniquePay,{
 
 ```
 
+```html
+<body>
+   <body>
+		<button onclick="pay()">pay</button>
+	</body>
+	<script type="text/javascript" src="js/UniquePay.js"></script>
+	<script>
+		function pay() {
+			//初始化SDK
+			UniquePay.initSdk({
+				"appId": "",
+				"timeStamp": "",
+				"nonceStr": "",
+				"signature": "",
+				"jsApiList": ["chooseWXPay"]
+			})
+			window.UniquePay.pay({
+				"appId": "",
+				"timeStamp": "",
+				"nonceStr": "",
+				"signType": "",
+				"paySign": "",
+				"package": ""
+			}).then(res => console.log(res));
+		}
+	</script>
+</body>
+```
+
 ### 配置说明
 ```js
 {
@@ -76,35 +105,38 @@ Vue.use(uniquePay,{
 
 ### 方法说明
 
+#### initSdk
+
+>初始化SDK(仅用于微信SDK模式签名)
+
+(void) this.$uniquePay.initSdk(signatureConfig /**微信权限验证配置**/)  
+
 #### pay
 
 >自动识别当前调用环境，执行对应支付函数
 
 (Promise) this.$uniquePay.pay(params)  
 
-#### wechatPay(useSdk: false)
+(Promise) this.$uniquePay.pay(params, signatureConfig /**微信权限验证配置，initSdk后不需要传递**/)  
+
+#### wechatPay(非SDK模式)
 
 >手动调用微信支付桥接对象，内部调用 WeixinJSBridge.invoke('getBrandWCPayRequest')
 
 (Promise) this.$uniquePay.wechatPay(params)  
 
-#### wechatPay(useSdk: true)
+#### wechatPay(SDK模式)
 
 >手动调用微信支付jsapi，内部调用 wx.chooseWXPay(params)
 
-(Promise) this.$uniquePay.wechatPay(params, signatureConfig /**权限验证配置**/)  
+(Promise) this.$uniquePay.wechatPay(params, signatureConfig /**微信权限验证配置，initSdk后不需要传递**/)  
 
-#### aliPay(useSdk: false)
+#### aliPay(非SDK模式)
 
->手动调用支付宝支付桥接对象，内部调用 AlipayJSBridge.call('tradePay')
+>非SDK模式:内部调用 AlipayJSBridge.call('tradePay')
+>SDK模式:内部调用 ap.tradePay(options)
 
-(Promise) this.$uniquePay.aliPay(params)  
-
-#### aliPay(useSdk: true)
-
->手动调用支付宝jsapi，内部调用 ap.tradePay(options)
-
-(Promise) this.$uniquePay.aliPay(params)  
+(Promise) this.$uniquePay.aliPay(params) 
 
 
 ###  参数说明
