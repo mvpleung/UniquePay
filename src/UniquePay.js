@@ -3,7 +3,7 @@
  * @Author: liangzc 
  * @Date: 2018-01-12
  * @Last Modified by: liangzc
- * @Last Modified time: 2018-03-16 15:44:15
+ * @Last Modified time: 2018-03-29 16:30:48
  */
 class _$UniquePay {
   constructor(useSdk) {
@@ -226,13 +226,14 @@ let _onBridgeReady = () => {
         if (document.addEventListener) {
           document.addEventListener(
             'WeixinJSBridgeReady',
-            resolve(WeixinJSBridge),
+            () => resolve(WeixinJSBridge),
             false
           );
         } else if (document.attachEvent) {
-          document.attachEvent('WeixinJSBridgeReady', resolve(WeixinJSBridge));
-          document.attachEvent(
-            'onWeixinJSBridgeReady',
+          document.attachEvent('WeixinJSBridgeReady', () =>
+            resolve(WeixinJSBridge)
+          );
+          document.attachEvent('onWeixinJSBridgeReady', () =>
             resolve(WeixinJSBridge)
           );
         }
@@ -245,7 +246,7 @@ let _onBridgeReady = () => {
       } else {
         document.addEventListener(
           'AlipayJSBridgeReady',
-          resolve(window.AlipayJSBridge),
+          () => resolve(window.AlipayJSBridge),
           false
         );
       }
