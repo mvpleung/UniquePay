@@ -68,6 +68,7 @@ Vue.use(uniquePay,{
 ```
 
 ```html
+仅当 script 标签引入时使用
 <body>
    <body>
 		<button onclick="pay()">pay</button>
